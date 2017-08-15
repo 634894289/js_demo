@@ -1,0 +1,134 @@
+<html>
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<title>Document</title>
+	<style>
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		.layer{
+			position: absolute;
+			width: 160px;
+			top: 40px;
+			left: 50px;
+			overflow: hidden;
+			text-align: center;
+		}
+		.titleStyle{
+			background-color:#111166;
+			color:#ffffff;
+			border-top:1px solid #FFFFFF;
+			font-size:9px;
+			cursor:hand; 
+			height: 30px;
+			line-height: 30px;
+		}
+		.contentStyle{
+			background-color:#eeffee;
+			color:blue;
+			font-size:9px; 
+			height: 300px;
+			
+			
+		}
+		.contentStyle p{
+			display: block;
+			height: 20px;
+			line-height: 20px;
+		}
+		.itemStyle{
+			position: relative;
+			top: 0;
+			left: 0;
+			width: 160px;
+		}
+		table{
+			width: 100%;
+		}
+	</style>
+</head>
+<body>
+	<div class="layer" id="layer">
+		
+	</div>
+</body>
+<script>
+	var stepNo = 10;
+	var runtimes = 0;
+	var itemNo = 0;
+	var contentHeight = 300;
+	var titleHeight=30;
+	var toItemIndex,
+	    onItemIndex;
+	window.onload = function(){
+		
+		addItem('即时通讯工具',['欢迎使用！']); 
+		addItem('总裁办公室',['李峰 ', '冯昊', '薛胜桥', '冯天宇']); 
+		addItem('总裁办公室',['李峰 ', '冯昊', '薛胜桥', '冯天宇']); 
+		addItem('总裁办公室',['李峰 ', '冯昊', '薛胜桥', '冯天宇']); 
+		addItem('总裁办公室',['李峰 ', '冯昊', '薛胜桥', '冯天宇']); 
+		addItem('总裁办公室',['李峰 ', '冯昊', '薛胜桥', '冯天宇']); 
+		layrtHeight = parseInt(itemNo*titleHeight) + parseInt(contentHeight);
+		document.getElementById('layer').setAttribute('style','height:'+layrtHeight);
+		toItemIndex = itemNo-1;
+		onItemIndex = itemNo-1;
+	}
+	function addItem(title, content){
+		var wrapDiv = document.createElement('div');
+		wrapDiv.setAttribute('id', 'item' + itemNo);
+		wrapDiv.style.top = -(contentHeight*itemNo);
+		wrapDiv.setAttribute('class','itemStyle');
+		var titleDiv = document.createElement('div');
+		titleDiv.setAttribute('class','titleStyle');
+		titleDiv.innerHTML = title;
+		titleDiv.onclick = changeItem(itemNo);
+		wrapDiv.appendChild(titleDiv);
+		var contentDiv = document.createElement('div');
+		contentDiv.setAttribute('class','contentStyle');
+		for(var i=0; i < content.length; i++){
+			var p = document.createElement('p');
+			p.innerHTML = content[i];
+			contentDiv.appendChild(p);
+		}
+		wrapDiv.appendChild(contentDiv);
+		document.getElementById('layer').appendChild(wrapDiv);
+		itemNo++;
+	}
+	
+	function changeItem(clickItemIndex) {
+		console.log(clickItemIndex)
+		toItemIndex = clickItemIndex;
+		if (toItemIndex >　onItemIndex) {
+			moveUp()
+		}
+		else {
+			moveDown();
+		}
+		runtimes++;
+		if(runtimes > stepNo){
+			onItemIndex = toItemIndex;
+			runtimes = 0;
+		}
+		else {
+			setTimeout("changeItem(toItemIndex)",10);
+		}
+	}
+	
+	function moveUp() {
+		for(var i = onItemIndex; i <= toItemIndex; i++) {
+			var element = document.getElementById('item' + i);
+			element.style.top = parseInt(element.style.top - contentHeight/stepNo);
+		}
+	}
+	
+	function moveDown() {
+		for(var i = onItemIndex; i > toItemIndex; i--) {
+			var element = document.getElementById('item' + i);
+			element.style.top = parseInt(element.style.top + contentHeight/stepNo);
+		}
+	}
+</script>
+</html>
